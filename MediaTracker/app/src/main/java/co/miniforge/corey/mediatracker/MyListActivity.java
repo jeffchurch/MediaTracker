@@ -50,36 +50,36 @@ public class MyListActivity extends AppCompatActivity {
         handleIntent();
     }
 
-    void handleIntent(){
-        if(getIntent() != null){
+    void handleIntent() {
+        if (getIntent() != null) {
             Intent intent = getIntent();
 
-            if(intent.hasExtra(mediaExtra)){
+            if (intent.hasExtra(mediaExtra)) {
                 try {
                     JSONObject json = new JSONObject(intent.getStringExtra(mediaExtra));
                     MediaItem item = new MediaItem(json);
 
-                    for(int i = 0; i < mediaItems.size(); i++){
-                        if(mediaItems.get(i).id.equals(item.id)){
+                    for (int i = 0; i < mediaItems.size(); i++) {
+                        if (mediaItems.get(i).id.equals(item.id)) {
                             mediaItems.set(i, item);
                             break;
                         }
                     }
 
                     storageUtil.saveMediaData(mediaItems);
-                } catch (Exception e){
+                } catch (Exception e) {
                     Log.e("handleIntentErr", String.format("Could not update item from intent: %s", e.getMessage()));
                 }
             }
         }
     }
 
-    void locateViews(){
+    void locateViews() {
         media_list_recycler = (RecyclerView) findViewById(R.id.media_list_recycler);
         add_media_item_button = (FloatingActionButton) findViewById(R.id.add_media_item_button);
     }
 
-    void bindData(){
+    void bindData() {
         add_media_item_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,16 +109,28 @@ public class MyListActivity extends AppCompatActivity {
         handler.post(runnable);
     }
 
-    public void updateMediaItems(List<MediaItem> mediaItems){
+    public void updateMediaItems(List<MediaItem> mediaItems) {
         this.mediaItems = mediaItems;
-        ((MediaRecyclerAdapter)media_list_recycler.getAdapter()).updateList(this.mediaItems);
+        ((MediaRecyclerAdapter) media_list_recycler.getAdapter()).updateList(this.mediaItems);
     }
 
-    void setUpRecyclerView(){
+    void setUpRecyclerView() {
         MediaRecyclerAdapter adapter = new MediaRecyclerAdapter();
         media_list_recycler.setAdapter(adapter);
 
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         media_list_recycler.setLayoutManager(manager);
+    }
+
+    public void deleteMediaItem(MediaItem item) {
+        for (int i = 0; i < mediaItems.size(); i++) {
+            if (mediaItems.get(i).id.equals(item.id)) {
+                mediaItems.remove(i);
+                break;
+            }
+        }
+        storageUtil.saveMediaData(mediaItems);
+        updateMediaItems(storageUtil.getMediaDataList());
+
     }
 }

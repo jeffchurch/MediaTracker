@@ -39,7 +39,7 @@ public class MediaViewHolder extends RecyclerView.ViewHolder {
         mediaDescription = itemView.findViewById(R.id.mediaDescription);
     }
 
-    public void bindData(final MediaItem mediaItem){
+    public void bindData(final MediaItem mediaItem) {
         this.mediaName.setText(mediaItem.title);
         this.mediaDescription.setText(mediaItem.description);
 
@@ -48,10 +48,18 @@ public class MediaViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 //TODO: Create a new activity with this object's data
                 //Hint: mediaItem.toJson().toString() && context.startActivity);
-                Intent intent  = new Intent(context.getApplicationContext(), MediaDetailActivity.class);
+                Intent intent = new Intent(context.getApplicationContext(), MediaDetailActivity.class);
                 jsonData = mediaItem.toJson().toString();
                 intent.putExtra(jsonData, jsonData);
                 context.startActivity(intent);
+            }
+        });
+
+        inflated.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ((MyListActivity)context).deleteMediaItem(mediaItem);
+                return true;
             }
         });
     }
