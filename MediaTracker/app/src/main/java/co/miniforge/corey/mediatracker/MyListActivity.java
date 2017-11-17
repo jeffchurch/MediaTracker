@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import java.util.List;
 import co.miniforge.corey.mediatracker.media_recycler.MediaRecyclerAdapter;
 import co.miniforge.corey.mediatracker.media_store.MediaStorageUtil;
 import co.miniforge.corey.mediatracker.model.MediaItem;
+import co.miniforge.corey.mediatracker.ui_helpers.ThemeHelper;
 
 public class MyListActivity extends AppCompatActivity {
     public static String mediaExtra = "mediaExtra";
@@ -34,12 +36,16 @@ public class MyListActivity extends AppCompatActivity {
 
     List<MediaItem> mediaItems = new LinkedList<>();
 
+    ThemeHelper themeHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        themeHelper = new ThemeHelper(getApplicationContext());
 
         storageUtil = new MediaStorageUtil(getApplicationContext());
 
@@ -133,4 +139,22 @@ public class MyListActivity extends AppCompatActivity {
         updateMediaItems(storageUtil.getMediaDataList());
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_my_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                //Go to a settings activity
+        }
+        return true;
+    }
+
+
 }

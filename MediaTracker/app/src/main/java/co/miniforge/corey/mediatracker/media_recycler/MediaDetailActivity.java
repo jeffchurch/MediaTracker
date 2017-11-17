@@ -13,15 +13,16 @@ import org.json.JSONObject;
 import co.miniforge.corey.mediatracker.MyListActivity;
 import co.miniforge.corey.mediatracker.R;
 import co.miniforge.corey.mediatracker.model.MediaItem;
+import co.miniforge.corey.mediatracker.ui_helpers.ThemeHelper;
 
 import static co.miniforge.corey.mediatracker.MyListActivity.mediaExtra;
 
 public class MediaDetailActivity extends AppCompatActivity {
 
     EditText title, url, description;
-    Button save;
+    Button save, themeChanger;
     Intent intent;
-
+    ThemeHelper themeHelper;
     JSONObject jsonDataFromIntent;
     private MediaItem mediaItem;
 
@@ -60,7 +61,9 @@ public class MediaDetailActivity extends AppCompatActivity {
         url.setText(mediaItem.url);
         description.setText(mediaItem.description);
         title.setText(mediaItem.title);
+        themeChanger = (Button) findViewById(R.id.themeButton);
 
+        themeHelper = new ThemeHelper(getApplicationContext());
     }
 
     private void turnOnClickListener() {
@@ -79,5 +82,25 @@ public class MediaDetailActivity extends AppCompatActivity {
 
             }
         });
+
+        themeChanger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(themeHelper.darkThemeEnabled()){
+                    themeHelper.enableDarkTheme(false);
+                }
+                else{
+                    themeHelper.enableDarkTheme(true);
+                }
+
+                themeHelper.themeTextView(title, description, url);
+                themeHelper.themeBackground(title);
+                themeHelper.themeBackground(description);
+                themeHelper.themeBackground(url);
+
+
+            }
+        });
+
     }
 }
