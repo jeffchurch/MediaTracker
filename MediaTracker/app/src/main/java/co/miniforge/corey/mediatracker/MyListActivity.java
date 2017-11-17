@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import co.miniforge.corey.mediatracker.media_recycler.MediaRecyclerAdapter;
+import co.miniforge.corey.mediatracker.media_sorter.MediaItemSortHelper;
 import co.miniforge.corey.mediatracker.media_store.MediaStorageUtil;
 import co.miniforge.corey.mediatracker.model.MediaItem;
 import co.miniforge.corey.mediatracker.ui_helpers.ThemeHelper;
@@ -150,8 +151,11 @@ public class MyListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                //Go to a settings activity
+            case R.id.type:
+                updateMediaItems(MediaItemSortHelper.sortByType(mediaItems));
+            case R.id.name:
+                updateMediaItems(MediaItemSortHelper.sortByName(mediaItems));
+
         }
         return true;
     }
